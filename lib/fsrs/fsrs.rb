@@ -185,7 +185,7 @@ module Fsrs
 
       return nil unless @state == State::REVIEW
 
-      elapsed_days = [0, (now - @last_review).to_i].max
+      elapsed_days = [0, ((now - @last_review) / 86400.0).round].max
       (1 + (factor * elapsed_days / @stability))**decay
     end
 
@@ -221,7 +221,7 @@ module Fsrs
       card.elapsed_days = if card.state == State::NEW
                             0
                           else
-                            (now - card.last_review).to_i
+                            ((now - card.last_review) / 86400.0).round
                           end
       card.last_review = now
       card.reps += 1
